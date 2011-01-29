@@ -1,7 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
+from django.views.decorators.cache import cache_page
 from django.views.generic import date_based, list_detail, simple
+
 from mysite.blog.models import Entry
 from mysite.blog.paginator import InfinitePaginator
 from tagging.views import tagged_object_list
@@ -9,6 +11,7 @@ from tagging.views import tagged_object_list
 import datetime
 #import re
 
+@cache_page(60 * 15)
 def blog_entry_list(request):
     queryset = Entry.objects.published_for_list()
 

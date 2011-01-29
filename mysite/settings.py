@@ -22,6 +22,7 @@ SERVER_EMAIL = deploy.SERVER_EMAIL
 
 DATABASES = deploy.DATABASES
 
+CACHE_BACKEND = deploy.CACHE_BACKEND
 TIME_ZONE = deploy.TIME_ZONE
 LANGUAGE_CODE = 'en-us'
 USE_I18N = False
@@ -103,6 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.sitemaps',
     'south',
+    'memcache_status',
 )
 
 # Activity sync settings
@@ -131,7 +133,7 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-
+    
     SEND_BROKEN_LINK_EMAILS = False
 
     # Match local network IPs to allow access from other machines

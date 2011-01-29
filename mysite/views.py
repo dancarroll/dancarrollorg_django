@@ -2,11 +2,13 @@ from django.contrib.sites.models import Site
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.decorators.cache import cache_page
 
 from mysite.blog.models import Entry
 from activitysync.models import Activity
 from blog.views import blog_entry_detail
 
+@cache_page(60 * 15)
 def index(request):
     # This logic is to support theme detection by Windows Live Writer.
     # It needs to see the actual post display, but it stupidly goes to the main

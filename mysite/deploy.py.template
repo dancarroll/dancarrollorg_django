@@ -25,6 +25,7 @@ DATABASES = {
     }
 }
 
+CACHE_BACKEND = 'dummy://' #'memcached://unix:/home/username/memcached.sock'
 TIME_ZONE = 'America/Los_Angeles'
 
 MEDIA_URL = ''
