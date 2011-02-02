@@ -9,6 +9,10 @@ class Migration(DataMigration):
     depends_on = (
         ("activitysync", "0001_initial"),
     )
+    needed_by = (
+        ("activitysync", "0002_auto__add_provider__add_field_activity_provider"),
+        ("activitysync", "0003_convert_to_provider_objects"),
+    )
 
     def forwards(self, orm):
         try:
