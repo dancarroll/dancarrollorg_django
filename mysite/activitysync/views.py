@@ -6,11 +6,7 @@ from activitysync.models import Activity
 from activitysync.paginator import InfinitePaginator
 
 def activity(request):
-    type = request.GET.get('type', '')
-    if type:
-        activity_list = Activity.objects.published().filter(source__exact=type)
-    else:
-        activity_list = Activity.objects.published().defer("username", "author", "comments", "guid")
+    activity_list = Activity.objects.published().defer("username", "author", "comments", "guid")
 
     # Make sure page request is an int.  If not, deliver first page.
     try:
