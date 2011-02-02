@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, Page, PageNotAnInteger, EmptyPage
+from django.core.urlresolvers import reverse
 
 # Code borrowed from django-pagination.  I ripped it out since I didn't want the
 # rest of the functionality it provided (auto-pagination).
@@ -12,15 +13,12 @@ class InfinitePaginator(Paginator):
     template string for creating the links to the next and previous pages.
     """
 
-    def __init__(self, object_list, per_page, allow_empty_first_page=True,
-        link_template='?page=%d'):
+    def __init__(self, object_list, per_page, allow_empty_first_page=True):
         orphans = 0 # no orphans
         super(InfinitePaginator, self).__init__(object_list, per_page, orphans,
             allow_empty_first_page)
         # no count or num pages
         del self._num_pages, self._count
-        # bonus links
-        self.link_template = link_template
 
     def validate_number(self, number):
         """
@@ -112,12 +110,15 @@ class InfinitePage(Page):
 
     def next_link(self):
         if self.has_next():
-            return self.paginator.link_template % (self.number + 1)
+            return reverse('activity_paged', args=[self.number + 1])
         return None
 
     def previous_link(self):
         if self.has_previous():
-            return self.paginator.link_template % (self.number - 1)
+            if self.number == 2:
+                return reverse('main_activity')
+            else:
+                return reverse('activity_paged', args=[self.number - 1])
         return None
 
     def page_title(self):
