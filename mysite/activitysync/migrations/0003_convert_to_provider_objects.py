@@ -41,6 +41,8 @@ class Migration(DataMigration):
             return u"twitter"
         elif activity.source == 'DL':
             return u"delicious"
+        elif activity.source == 'DG':
+            return u"digg"
         elif activity.source == 'FB':
             return u"facebook"
         elif activity.source == 'HU':
@@ -55,6 +57,8 @@ class Migration(DataMigration):
             return u"Twitter"
         elif activity.source == 'DL':
             return u"Delicious"
+        elif activity.source == 'DG':
+            return u"Digg"
         elif activity.source == 'FB':
             return u"Facebook"
         elif activity.source == 'HU':
@@ -67,6 +71,8 @@ class Migration(DataMigration):
     def get_activity_prefix(self, activity):
         if activity.source == 'DL':
             return u'Bookmarked '
+        elif activity.source == 'DG':
+            return u'Dugg '
         elif activity.source == 'HU':
             return u'Watched '
         elif activity.source == 'RD':
@@ -78,17 +84,19 @@ class Migration(DataMigration):
     
     def get_network_link(self, activity):
         if activity.source == 'T':
-            return u"http://twitter.com/erunama"
+            return u"http://twitter.com/"
         elif activity.source == 'DL':
-            return u"http://delicious.com/erunama"
+            return u"http://delicious.com/"
+        elif activity.source == 'DG':
+            return u"http://www.digg.com"
         elif activity.source == 'FB':
-            return u"http://www.facebook.com/people/Dan-Carroll/401024"
+            return u"http://www.facebook.com/"
         elif activity.source == 'HU':
-            return u"http://www.hulu.com/profiles/erunama/"
+            return u"http://www.hulu.com/"
         elif activity.source == 'RD':
-            return u"http://www.reddit.com/user/erunama/"
+            return u"http://www.reddit.com/"
         elif activity.source == 'GR':
-            return u"http://www.google.com/reader/shared/dancarroll"
+            return u"http://www.google.com/reader/"
 
 # HELPER METHODS FOR BACKWARDS MIGRATION
     def sourceid_to_sourcechoice(self, provider):
@@ -96,6 +104,8 @@ class Migration(DataMigration):
             return u"T"
         elif provider.sourceid == 'delicious':
             return u"DL"
+        elif provider.sourceid == 'digg':
+            return u"DG"
         elif provider.sourceid == 'facebook':
             return u"FB"
         elif provider.sourceid == 'hulu':
