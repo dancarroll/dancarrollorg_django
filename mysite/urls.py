@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     
     # Main sections
     url(r'^activity/$', view='activitysync.views.activity', name='main_activity'),
+    url(r'^activity/page/(?P<page>\d+)/$', view='activitysync.views.activity', kwargs={'explicit_page_request': True}, name='activity_paged'),
     url(r'^blog/', include('mysite.blog.urls')),
     
     # RSS feeds
