@@ -26,7 +26,11 @@ urlpatterns = patterns('',
     #url (r'^search/$',
     #    view=blog_views.search,
     #    name='blog_search'),
-        
+
+    url(r'^page/(?P<page>\d+)/$',
+        view=blog_views.blog_entry_list,
+        kwargs={'explicit_page_request': True},
+        name='blog_index_paged'),
     url(r'^$',
         view=blog_views.blog_entry_list,
         name='blog_index'),

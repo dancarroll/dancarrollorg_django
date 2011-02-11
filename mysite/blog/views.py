@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404
 from django.views.decorators.cache import cache_page
@@ -12,23 +12,36 @@ import datetime
 #import re
 
 @cache_page(60 * 15)
-def blog_entry_list(request):
-    queryset = Entry.objects.published_for_list()
-
-    # Make sure page request is an int.  If not, deliver first page.
+def blog_entry_list(request, page=1, explicit_page_request=False):
+    # Make sure page parameter is an integer.
     try:
-        page = int(request.GET.get('page', '1'))
+        page = int(page)
     except ValueError:
         page = 1
 
-    paginator = InfinitePaginator(queryset, 10)
+    # Make sure we only have one canonical first page
+    if explicit_page_request and page == 1:
+        return redirect('blog_index')
+
+    # Previous URL used GET parameter 'page', so let's check
+    # for that and redirect to new view if necessary
+    if not explicit_page_request:
+        try:
+            requestNum = request.GET['page']
+            if requestNum != None and requestNum.isdigit():
+                return redirect('blog_index_paged', page=requestNum)
+        except KeyError:
+            pass
+
+    entry_list = Entry.objects.published_for_list()
+    paginator = InfinitePaginator(entry_list, 10)
     try:
         entries = paginator.page(page)
     except:
         raise Http404
 
     return render_to_response('blog/entry_list.html',
-                entries.create_template_context(),
+                entries.create_template_context('blog_index_paged', 'blog_index'),
                 context_instance=RequestContext(request))
 
 

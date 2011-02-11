@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, Page, PageNotAnInteger, EmptyPage
+from django.core.urlresolvers import reverse
 
 # Code borrowed from django-pagination.  I ripped it out since I didn't want the
 # rest of the functionality it provided (auto-pagination).
@@ -12,15 +13,12 @@ class InfinitePaginator(Paginator):
     template string for creating the links to the next and previous pages.
     """
 
-    def __init__(self, object_list, per_page, allow_empty_first_page=True,
-        link_template='?page=%d'):
+    def __init__(self, object_list, per_page, allow_empty_first_page=True):
         orphans = 0 # no orphans
         super(InfinitePaginator, self).__init__(object_list, per_page, orphans,
             allow_empty_first_page)
         # no count or num pages
         del self._num_pages, self._count
-        # bonus links
-        self.link_template = link_template
 
     def validate_number(self, number):
         """
@@ -110,14 +108,17 @@ class InfinitePage(Page):
 
     #Bonus methods for creating links
 
-    def next_link(self):
+    def next_link(self, paged_view_name):
         if self.has_next():
-            return self.paginator.link_template % (self.number + 1)
+            return reverse(paged_view_name, args=[self.number + 1])
         return None
 
-    def previous_link(self):
+    def previous_link(self, paged_view_name, first_page_view_name=None):
         if self.has_previous():
-            return self.paginator.link_template % (self.number - 1)
+            if self.number == 2 and first_page_view_name:
+                return reverse(first_page_view_name)
+            else:
+                return reverse(paged_view_name, args=[self.number - 1])
         return None
 
     def page_title(self):
@@ -125,12 +126,12 @@ class InfinitePage(Page):
             return 'Page %s' % self.number
         return None
 
-    def create_template_context(self):
+    def create_template_context(self, paged_view_name, first_page_view_name=None):
         return {
             'object_list': self.object_list,
             'page_title': self.page_title(),
             'has_next': self.has_next(),
             'has_previous': self.has_previous(),
-            'next': self.next_link(),
-            'previous': self.previous_link(),
+            'next': self.next_link(paged_view_name),
+            'previous': self.previous_link(paged_view_name, first_page_view_name),
         }
