@@ -110,14 +110,11 @@ INSTALLED_APPS = (
 # Activity sync settings
 ACTIVITYSYNC_PROVIDERS = (
     'activitysync.providers.googlereader.GoogleReaderProvider',
-    'activitysync.providers.twitterprovider.TwitterProvider',
+    'activitysync.providers.twitterprovider.TwitterUserProvider',
     'activitysync.providers.redditprovider.RedditProvider',
 )
 
-TWITTER_USERNAME = deploy.TWITTER_USERNAME
-REDDIT_USERNAME = deploy.REDDIT_USERNAME
-GOOGLEREADER_SHARED_RSS = deploy.GOOGLEREADER_SHARED_RSS
-GOOGLEREADER_PUBLIC_URL = deploy.GOOGLEREADER_PUBLIC_URL
+ACTIVITYSYNC_SETTINGS = deploy.ACTIVITYSYNC_SETTINGS
 
 
 # Some special settings to aid development in debug mode
