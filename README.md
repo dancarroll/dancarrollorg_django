@@ -1,4 +1,4 @@
-**ARCHIVED** This was the old version of my website, written using Python and the Django web framework. It has not been modified
+**ARCHIVED**: This was the old version of my website, written using Python and the Django web framework. It has not been modified
 since 2011, and is only kept around for reference purposes.
 
 ----------
